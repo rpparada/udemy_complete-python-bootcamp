@@ -5,24 +5,50 @@ Created on Mon Dec 18 23:14:37 2017
 
 @author: rodrigoparada
 """
+
+import random
+
 class MazoCartas(object):
     
-    # Trebol = T
-    # Pica = P
-    # Corazon = C
-    # Diamante = D
-    
-    mazo_inicial = {'TA':1,'T2':2,'T3':3,'T4':4,'T5':5,'T6':6,'T7':7,'T8':8,'T9': 9,'T10':10,'TJ':10,'TQ':10,'TK':10,
-                   'PA':1,'P2':2,'P3':3,'P4':4,'P5':5,'P6':6,'P7':7,'P8':8,'P9': 9,'P10':10,'PJ':10,'PQ':10,'PK':10,
-                   'CA':1,'C2':2,'C3':3,'C4':4,'C5':5,'C6':6,'C7':7,'C8':8,'C9': 9,'C10':10,'CJ':10,'CQ':10,'CK':10,
-                   'DA':1,'D2':2,'D3':3,'D4':4,'D5':5,'D6':6,'D7':7,'D8':8,'D9': 9,'D10':10,'DJ':10,'DQ':10,'DK':10}
+    # Tipo de Cartas (Trebol = T, Pica = P, Corazon = C, Diamante = D) mas Valor
+    mazo_inicial = {'TA':[1,"A"],'T2':[2,"A"],'T3':[3,"A"],'T4':[4,"A"],'T5':[5,"A"],'T6':[6,"A"],'T7':[7,"A"],'T8':[8,"A"],'T9':[9,"A"],'T10':[10,"A"],'TJ':[10,"A"],'TQ':[10,"A"],'TK':[10,"A"],
+                    'PA':[1,"A"],'P2':[2,"A"],'P3':[3,"A"],'P4':[4,"A"],'P5':[5,"A"],'P6':[6,"A"],'P7':[7,"A"],'P8':[8,"A"],'P9':[9,"A"],'P10':[10,"A"],'PJ':[10,"A"],'PQ':[10,"A"],'PK':[10,"A"],
+                    'CA':[1,"A"],'C2':[2,"A"],'C3':[3,"A"],'C4':[4,"A"],'C5':[5,"A"],'C6':[6,"A"],'C7':[7,"A"],'C8':[8,"A"],'C9':[9,"A"],'C10':[10,"A"],'CJ':[10,"A"],'CQ':[10,"A"],'CK':[10,"A"],
+                    'DA':[1,"A"],'D2':[2,"A"],'D3':[3,"A"],'D4':[4,"A"],'D5':[5,"A"],'D6':[6,"A"],'D7':[7,"A"],'D8':[8,"A"],'D9':[9,"A"],'D10':[10,"A"],'DJ':[10,"A"],'DQ':[10,"A"],'DK':[10,"A"]}
     
     numero_cartas = 13 * 4
     
     def __init__(self, numero_mazos = 1):
         self.mazos_cartas = [self.mazo_inicial] * numero_mazos
         self.numero_total_cartas = self.numero_cartas * numero_mazos
+            
+    def dame_cartas(self, numero = 1):
+        num = 0
+        lista_cartas = [] 
+        while num < numero:
+            carta = list(random.choice(self.mazos_cartas[0].items()))
+            self.mazos_cartas[0].pop(carta[0])
+            lista_cartas.append(carta)
+            num += 1
+            
+        return lista_cartas
     
-    def dame_cartas(numero):
-        pass
-        
+    def numero_cartas_disponibles(self):
+        contador = 0
+        for mazo in self.mazos_cartas:
+            contador = contador + len(mazo)
+        return contador
+
+    def numero_cartas_nodisponibles(self):
+        return self.numero_cartas - self.numero_cartas_disponibles()
+    
+maz = MazoCartas(1)
+print maz.numero_cartas_disponibles()
+print maz.numero_cartas_nodisponibles()
+print maz.dame_cartas(15)
+print maz.numero_cartas_disponibles()
+print maz.numero_cartas_nodisponibles()
+print maz.dame_cartas(10)
+print maz.numero_cartas_disponibles()
+print maz.numero_cartas_nodisponibles()
+
