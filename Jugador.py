@@ -15,9 +15,6 @@ class Jugador(Persona):
         self.monto_inicial = monto_inicial
         self.monto_restante = monto_inicial
     
-    def nombre(self):
-        return self.nombre
-    
     def monto_inicial(self):
         return self.monto_inicial
     
