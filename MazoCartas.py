@@ -3,7 +3,7 @@
 """
 Created on Mon Dec 18 23:14:37 2017
 
-@author: rodrigoparada
+@author: Rodrigo Parada
 """
 
 import random

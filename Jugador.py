@@ -3,7 +3,7 @@
 """
 Created on Sun Dec 17 22:53:03 2017
 
-@author: rodrigoparada
+@author: Rodrigo Parada
 """
 
 from Persona import Persona
