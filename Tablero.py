@@ -21,6 +21,22 @@ class Tablero(object):
         self.turno_jugador = 0
         self.crupier = None
         self.monto_inicial = 0
+        self.monto_actual = 0
+    
+    def dame_turno(self):
+        return self.turno_jugador
+    
+    def dame_estado_juego(self):
+        return self.estado_juego
+    
+    def dame_listado_jugadores(self):
+        return self.lista_jugadores
+    
+    def dame_monto_inicial(self):
+        return self.monto_inicial
+    
+    def dame_monto_actual(self):
+        return self.monto_actual
     
     def agrega_jugador(self, jugador):
         if len(self.lista_jugadores) < 7:
@@ -29,8 +45,17 @@ class Tablero(object):
             print 'Numero Max de Jugadore es 7'
             
     def quitar_jugador(self, jugador):
-        pass
-    
+        pos = self.dame_posicion_jugador(jugador)
+        if pos != None:
+            self.lista_jugadores.pop(pos)
+        else:
+            print 'Jugador no encontrado'
+        
+    def dame_posicion_jugador(self, nombre):
+        for indice,jugador in enumerate(self.lista_jugadores):
+            if jugador.dame_nombre() == nombre:
+                return indice
+        
     def iniciar_juego(self, mazo, crupier):
         if len(self.lista_jugadores) == 0:
             print 'Juego no puede comenzar, no hay jugadores'
@@ -67,12 +92,35 @@ class Tablero(object):
         print 'Monto Inicial .....: %r ' %self.monto_inicial
             
 
+# Crea objeto tablero
 tablero = Tablero()
+
+# Muestra estado actual del juego en tablero
 tablero.muestra_estado()
+
+# Crea jugador Rodrigo con 100 puntos de juego y lo agregar al actual juego sin iniciar
 rodrigo = Jugador("Rodrigo", 100)
-juan = Jugador("Jugador", 200)
 tablero.agrega_jugador(rodrigo)
+
+# Crea jugador Juan con 200 puntos de juego y lo agregar al actual juego sin iniciar
+juan = Jugador("Juan", 200)
 tablero.agrega_jugador(juan)
-tablero.iniciar_juego(MazoCartas(),Crupier("Pedro"))
+
+# Crea crupier llamado Pedro
+crupier = Crupier("Pedro")
+
+# Crea mazo de juego
+mazo = MazoCartas()
+
+# Inicia juego en objeto tabla asignado el mazo y crupier 
+tablero.iniciar_juego(mazo, crupier)
+
+# Muestra estado actual del juego en tavlero
+tablero.muestra_estado()
+
+# Quitar jugador Rodrigo
+tablero.quitar_jugador('Rodrigo')
+
+# Muestra estado actual del juego en tavlero
 tablero.muestra_estado()
     
