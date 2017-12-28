@@ -7,9 +7,13 @@ Created on Sun Dec 17 23:23:16 2017
 """
 # Reglas extraidas desde http://www.casino.es/blackjack/como-jugar-blackjack/
 
+# Importando clases propias
 from Crupier import Crupier
 from MazoCartas import MazoCartas
 from Jugador import Jugador
+
+# Importando para limpiar consola
+import os
 
 class Tablero(object):
     
@@ -48,15 +52,27 @@ class Tablero(object):
         pos = self.dame_posicion_jugador(jugador)
         if pos != None:
             self.lista_jugadores.pop(pos)
+            if len(self.lista_jugadores) == 0:
+                self.reset_juego()
+            elif self.turno_jugador == len(self.lista_jugadores):
+                self.turno_jugador = 0
         else:
             print 'Jugador no encontrado'
+            
+    def reset_juego(self):
+        self.estado_juego = False
+        self.lista_jugadores = []
+        self.turno_jugador = 0
+        self.crupier = None
+        self.monto_inicial = 0
+        self.monto_actual = 0
         
     def dame_posicion_jugador(self, nombre):
         for indice,jugador in enumerate(self.lista_jugadores):
             if jugador.dame_nombre() == nombre:
                 return indice
         
-    def iniciar_juego(self, mazo, crupier):
+    def abre_juego(self, mazo, crupier):
         if len(self.lista_jugadores) == 0:
             print 'Juego no puede comenzar, no hay jugadores'
         elif self.estado_juego:
@@ -69,6 +85,7 @@ class Tablero(object):
             self.monto_inicial = 1000
     
     def muestra_estado(self):
+        print ' '
         print ' ------------- Estado Juego --------------- '
         if self.estado_juego:
             print 'Estado Juego ......: Activo' 
@@ -77,12 +94,15 @@ class Tablero(object):
         if len(self.lista_jugadores) > 0:
             print 'Lista Jugadores ...: (%r)' %len(self.lista_jugadores)
             for jugador in self.lista_jugadores:
-                print jugador.dame_nombre()
+                print 'Nombre: %s, estado <%r>, Apuesta actual <%r>' %(jugador.dame_nombre(), jugador.dame_estado_jugador(), jugador.dame_apuesta_actual())
+                print '        Monto inicial <%r>, Monto restante <%r>' %(jugador.dame_monto_inicial(), jugador.dame_monto_restante())
         else:
             print 'Lista Jugadores....: Vacia'
         
         if len(self.lista_jugadores) > 0 and self.turno_jugador < len(self.lista_jugadores):
-            print 'Turno Jugador .....: %s ' %self.lista_jugadores[self.turno_jugador].dame_nombre()
+            print 'Turno Jugador .....: %s (%r)' %(self.lista_jugadores[self.turno_jugador].dame_nombre(),self.turno_jugador)
+        else:
+            print 'Turno Jugador .....: (%r)' %self.turno_jugador
             
         if self.crupier:
             print 'Crupier ...........: %s ' %self.crupier.dame_nombre()
@@ -90,37 +110,20 @@ class Tablero(object):
             print 'Crupier ...........: Juego no tiene Crupier asignado'
         
         print 'Monto Inicial .....: %r ' %self.monto_inicial
-            
-
-# Crea objeto tablero
-tablero = Tablero()
-
-# Muestra estado actual del juego en tablero
-tablero.muestra_estado()
-
-# Crea jugador Rodrigo con 100 puntos de juego y lo agregar al actual juego sin iniciar
-rodrigo = Jugador("Rodrigo", 100)
-tablero.agrega_jugador(rodrigo)
-
-# Crea jugador Juan con 200 puntos de juego y lo agregar al actual juego sin iniciar
-juan = Jugador("Juan", 200)
-tablero.agrega_jugador(juan)
-
-# Crea crupier llamado Pedro
-crupier = Crupier("Pedro")
-
-# Crea mazo de juego
-mazo = MazoCartas()
-
-# Inicia juego en objeto tabla asignado el mazo y crupier 
-tablero.iniciar_juego(mazo, crupier)
-
-# Muestra estado actual del juego en tavlero
-tablero.muestra_estado()
-
-# Quitar jugador Rodrigo
-tablero.quitar_jugador('Rodrigo')
-
-# Muestra estado actual del juego en tavlero
-tablero.muestra_estado()
+        
+    def mueve_turno(self):
+        if self.turno_jugador == (len(self.lista_jugadores) - 1):
+            self.turno_jugador = 0
+        else:
+            self.turno_jugador += 1
     
+    def juego_apuesta_inicial(self, jugador, monto_apuesta_inicial):
+        if monto_apuesta_inicial <= jugador.dame_monto_restante() and monto_apuesta_inicial > 0:
+            jugador.definir_estado_jugador(1)
+            jugador.definir_apuesta_actual(monto_apuesta_inicial)
+        else:
+            print '%s no tiene suficiente dinero' %jugador.dame_nombre()
+    
+    def inicia_juego(self):
+        pass
+            
