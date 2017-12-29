@@ -40,6 +40,7 @@ tablero.agrega_jugador(chino)
 crupier = Crupier("Pedro")
 # Crea mazo de juegoa
 mazo = MazoCartas()
+print mazo.dame_cartas(1)
 
 # Inicia juego en objeto tabla asignado el mazo y crupier 
 tablero.abre_juego(mazo, crupier)
@@ -49,6 +50,22 @@ tablero.muestra_estado()
 
 for jugador in tablero.dame_listado_jugadores():
     tablero.juego_apuesta_inicial(jugador, 60)
+
+# Muestra estado actual del juego en tablero
+tablero.muestra_estado()
+
+# Cierra apuestas iniciales e inicia el juego 
+tablero.inicia_juego()
+
+# Reparte carta a jugador
+tablero.repartir_carta(rodrigo)
+tablero.repartir_carta(rodrigo)
+tablero.repartir_carta(rodrigo)
+
+rodrigo.plantarce() 
+
+print rodrigo.dame_lista_cartas_juego()
+print rodrigo.dame_suma_cartas()
 
 # Muestra estado actual del juego en tablero
 tablero.muestra_estado()

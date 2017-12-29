@@ -14,7 +14,7 @@ class Jugador(Persona):
         Persona.__init__(self, nombre)
         self.monto_inicial = monto_inicial
         self.monto_restante = monto_inicial
-        # Estado 0 = inactivo, 1 = en juego (apuesta inicial hecha), 2 = gano, 3 = empato, 4 = perdio
+        # Estado 0 = inactivo, 1 = en juego (apuesta inicial hecha), 2 = gano, 3 = empato, 4 = perdio, 5 = plantarce
         self.estado_jugador = 0
         self.lista_cartas_juego = []
         self.apuesta_actual = 0
@@ -38,7 +38,8 @@ class Jugador(Persona):
         return self.apuesta_actual
     
     def definir_estado_jugador(self, nuevo_estado):
-        if nuevo_estado == 0 or 1 or 2 or 3 or 4:
+        # Estado 0 = inactivo, 1 = en juego (apuesta inicial hecha), 2 = gano, 3 = empato, 4 = perdio, 5 = plantarce
+        if nuevo_estado == 0 or 1 or 2 or 3 or 4 or 5:
             self.estado_jugador = nuevo_estado
         else:
             print 'Estado desconosido, jugador %s mantendra su estado actual' %self.nombre
@@ -47,11 +48,29 @@ class Jugador(Persona):
         self.apuesta_actual = monto
         self.monto_restante -= monto
         
-    def perdir_carta(self):
-        pass
+    def perdir_carta(self, carta):
+        if carta != None:
+            self.lista_cartas_juego.append(carta)
+    
+    def dame_suma_cartas(self):
+        total = 0
+        for carta in self.lista_cartas_juego:
+            total += carta[0][1]
+        
+        return total
     
     def plantarce(self):
-        pass
+        # Estado 0 = inactivo, 1 = en juego (apuesta inicial hecha), 2 = gano, 3 = empato, 4 = perdio, 5 = plantarce
+        if self.estado_jugador == 1:
+            self.estado_jugador = 5
+        elif self.estado_jugador == 2:
+            print 'No puedes plantarte, ya ganaste'
+        elif self.estado_jugador == 3:
+            print 'No puedes plantarte, empataste'
+        elif self.estado_jugador == 4:
+            print 'No puedes plantarte, ya perdiste'
+        elif self.estado_jugador == 5:
+            print 'No puedes plantarte, ya lo hiciste'
     
     def doblar_apuesta(self):
         pass
