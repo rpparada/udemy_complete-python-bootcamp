@@ -83,7 +83,7 @@ class Tablero(object):
             self.crupier = crupier
             self.turno_jugador = 0
             self.monto_inicial = 1000
-    
+            
     def muestra_estado(self):
         print ' '
         print ' ------------- Estado Juego --------------- '
@@ -125,6 +125,10 @@ class Tablero(object):
         else:
             print 'Numero mazo .......: No hay mazo asignado'
         print 'Monto Inicial .....: %r ' %self.monto_inicial
+    
+    def __str__(self):
+        return 'Estado juego %s' %self.estado_juego
+        
         
     def mueve_turno(self):
         if self.turno_jugador == (len(self.lista_jugadores) - 1):
@@ -145,12 +149,21 @@ class Tablero(object):
     
     def inicia_juego(self):
         # Checkea que haya jugadores en juego estado = 1
+        
+        # Este codigo hacelo mismo que el comentado abajo, solo estamos utilizando Comprehensions
+        lista_aux  = [jugador for jugador in self.lista_jugadores if jugador.dame_estado_jugador() == 1]
+        if len(lista_aux) == 0:
+            print 'No hay ningun jugador con apuesta inicial realizada'
+            return
+        '''
         for jugador in self.lista_jugadores:
             if jugador.dame_estado_jugador() == 1:
                 break
+        
         else:
             print 'No hay ningun jugador con apuesta inicial realizada'
             return
+        '''
         
         # Chekea estado del juego
         if self.estado_juego != 0:

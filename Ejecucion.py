@@ -70,6 +70,8 @@ print rodrigo.dame_suma_cartas()
 # Muestra estado actual del juego en tablero
 tablero.muestra_estado()
 
+print tablero
+
 # Quitar jugador Chino
 #tablero.quitar_jugador('Rodrigo')
 
